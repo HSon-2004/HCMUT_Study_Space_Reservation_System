@@ -1,6 +1,12 @@
 # app/__init__.py
 
 from flask import Flask
+from flask_mongoengine import MongoEngine
+from config import MONGODB_SETTINGS
+from routes.room_route import room_bp
+    
+
+
 
 from .database import init_db
 from .seed_data import seed_data
