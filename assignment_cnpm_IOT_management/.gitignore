@@ -1,0 +1,4 @@
+backend/.env
+backend/Pipfile
+backend/Pipfile.lock
+backend/test/
