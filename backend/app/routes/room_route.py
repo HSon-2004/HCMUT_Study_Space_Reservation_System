@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify
-from services import room_service
+from app.services import room_service
+from app.utils import IsAdmin
 
 room_bp = Blueprint("room_bp", __name__)
 
-def is_admin():
-    return request.headers.get("X-Admin", "").lower() == "true"
+
 
 @room_bp.route("/rooms", methods=["GET"])
 def get_rooms():
@@ -19,14 +19,16 @@ def get_room(room_id):
 
 @room_bp.route("/rooms/create", methods=["POST"])
 def create_new_room():
-    if not is_admin():
+    user_id = request.headers.get("User-ID")
+    if not IsAdmin(user_id):
         return jsonify({"error": "Admin privileges required"}), 403
     room = room_service.create_room(request.json)
     return jsonify(room), 201
 
-@room_bp.route("/rooms/<room_id>", methods=["PUT"])
+@room_bp.route("/rooms/<room_id>/update", methods=["PUT"])
 def update_existing_room(room_id):
-    if not is_admin():
+    user_id = request.headers.get("User-ID")
+    if not IsAdmin(user_id):
         return jsonify({"error": "Admin privileges required"}), 403
     room = room_service.update_room(room_id, request.json)
     if not room:
@@ -35,7 +37,8 @@ def update_existing_room(room_id):
 
 @room_bp.route("/rooms/<room_id>", methods=["DELETE"])
 def delete_existing_room(room_id):
-    if not is_admin():
+    user_id = request.headers.get("User-ID")
+    if not IsAdmin(user_id):
         return jsonify({"error": "Admin privileges required"}), 403
     success = room_service.delete_room(room_id)
     if not success:

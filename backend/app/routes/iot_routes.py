@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.services.iot_service import IoTService
+from app.services import IoTService
 
 iot_bp = Blueprint("iot", __name__)
 

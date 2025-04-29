@@ -20,5 +20,4 @@ class Room(Document):
             time = StringField(required=True)
             status = StringField(required=True)
 
-        
 

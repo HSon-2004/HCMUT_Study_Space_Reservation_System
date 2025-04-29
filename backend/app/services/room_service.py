@@ -1,27 +1,34 @@
-from schemas.room_schema import Room
+from app.models import Room
+from app.schemas import RoomSchema
+
+
+room_schema = RoomSchema()
+rooms_schema = RoomSchema(many=True)
+
 
 def get_all_rooms():
-    return [room.to_json() for room in Room.objects]
+    rooms = Room.objects()
+    return rooms_schema.dump(rooms)
 
 def get_room_by_id(room_id):
-    room = Room.objects(id=room_id).first()
-    return room.to_json() if room else None
+    room = Room.objects(room_id=room_id).first()
+    return room_schema.dump(room) if room else None
 
 def create_room(data):
     room = Room(**data)
     room.save()
-    return room.to_json()
+    return room_schema.dump(room)
 
 def update_room(room_id, data):
-    room = Room.objects(id=room_id).first()
+    room = Room.objects(room_id=room_id).first()
     if not room:
         return None
     room.update(**data)
     room.reload()
-    return room.to_json()
+    return room_schema.dump(room)
 
 def delete_room(room_id):
-    room = Room.objects(id=room_id).first()
+    room = Room.objects(room_id=room_id).first()
     if not room:
         return False
     room.delete()

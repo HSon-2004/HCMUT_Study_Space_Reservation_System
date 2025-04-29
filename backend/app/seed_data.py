@@ -1,5 +1,5 @@
-from app.models import User, Room, Booking
-from app.database import init_db
+from .models import User, Room, Booking
+from .config import init_db
 from datetime import datetime, timezone
 
 

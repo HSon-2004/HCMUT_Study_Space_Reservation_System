@@ -1,14 +1,15 @@
 from flask import Blueprint, request, jsonify
 from mongoengine.errors import DoesNotExist, ValidationError
 from app.services import booking_service
-from app.utils.helpers import serialize_booking
+from app.utils.helpers import serialize_booking, IsAdmin
 from app.models.booking import Booking
 
-booking_bp = Blueprint('booking', __name__, url_prefix='/bookings')
+booking_bp = Blueprint('booking', __name__)
+
 
 
 # GET /bookings - Lấy tất cả booking của user hiện tại
-@booking_bp.route('', methods=['GET'])
+@booking_bp.route('/bookings', methods=['GET'])
 def get_user_bookings():
     user_id = request.headers.get("User-ID")
     if not user_id:
@@ -19,10 +20,10 @@ def get_user_bookings():
 
 
 # GET /bookings/all - Chỉ admin
-@booking_bp.route('/all', methods=['GET'])
+@booking_bp.route('/bookings/all', methods=['GET'])
 def get_all_bookings():
     user_id = request.headers.get("User-ID")
-    if not user_id or str(user_id) != "20":  # user_id = 20 là admin
+    if not IsAdmin(user_id):
         return jsonify({"error": "Unauthorized"}), 403
 
     bookings = booking_service.get_all_bookings()
@@ -30,7 +31,7 @@ def get_all_bookings():
 
 
 # GET /bookings/<booking_id> - Lấy thông tin 1 booking
-@booking_bp.route('/<booking_id>', methods=['GET'])
+@booking_bp.route('/bookings/<booking_id>', methods=['GET'])
 def get_booking_by_id(booking_id):
     try:
         booking = booking_service.get_booking_by_id(booking_id)
@@ -40,7 +41,7 @@ def get_booking_by_id(booking_id):
 
 
 # POST /bookings - Tạo mới 1 booking
-@booking_bp.route('', methods=['POST'])
+@booking_bp.route('/bookings/create', methods=['POST'])
 def create_booking():
     data = request.get_json()
     user_id = request.headers.get("User-ID")
@@ -55,7 +56,7 @@ def create_booking():
 
 
 # PUT /bookings/<booking_id> - Cập nhật booking
-@booking_bp.route('/<booking_id>', methods=['PUT'])
+@booking_bp.route('/bookings/<booking_id>', methods=['PUT'])
 def update_booking(booking_id):
     data = request.get_json()
     try:
@@ -66,7 +67,7 @@ def update_booking(booking_id):
 
 
 # DELETE /bookings/<booking_id> - Xóa booking
-@booking_bp.route('/<booking_id>', methods=['DELETE'])
+@booking_bp.route('/bookings/<booking_id>', methods=['DELETE'])
 def delete_booking(booking_id):
     try:
         booking_service.cancel_booking(booking_id)
@@ -76,7 +77,7 @@ def delete_booking(booking_id):
 
 
 # POST /bookings/<booking_id>/checkin - Check-in phòng
-@booking_bp.route('/<booking_id>/checkin', methods=['POST'])
+@booking_bp.route('/bookings/<booking_id>/checkin', methods=['POST'])
 def checkin_booking(booking_id):
     try:
         booking_service.checkin_booking(booking_id)
@@ -85,3 +86,4 @@ def checkin_booking(booking_id):
         return jsonify({'error': 'Booking not found'}), 404
     except ValidationError as e:
         return jsonify({'error': str(e)}), 400
+
