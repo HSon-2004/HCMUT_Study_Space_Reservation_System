@@ -2,7 +2,7 @@ from mongoengine import Document, StringField, DateTimeField
 from datetime import datetime, timezone
 
 class Booking(Document):
-    STATUS_CHOICES = ('pending', 'confirmed', 'cancelled', 'checked_in', 'checked_out')
+    STATUS_CHOICES = ('confirmed', 'cancelled', 'checked_in', 'checked_out')
 
     book_id = StringField(required=True, unique=True)
     user_id = StringField(required=True)
@@ -11,6 +11,8 @@ class Booking(Document):
     checkout = DateTimeField(required=True)
     status = StringField(required=True, choices=STATUS_CHOICES)
     book_slot = StringField(required=True)
+    qr_code_data = StringField()  # ✅ Trường mới để lưu mã QR
+
     created_at = DateTimeField(default=datetime.now(timezone.utc))
     updated_at = DateTimeField(default=datetime.now(timezone.utc))
 

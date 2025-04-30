@@ -1,7 +1,7 @@
 from datetime import datetime
 from mongoengine.errors import DoesNotExist, ValidationError
-from app.models.booking import Booking
-from app.models.room import Room
+from app.models import Booking
+from app.models import Room
 
 
 def get_all_bookings():
@@ -12,6 +12,9 @@ def get_booking_by_id(booking_id):
     booking = Booking.objects.get(book_id=booking_id)
     return booking
 
+def get_bookings_by_room(room_id):
+    bookings = Booking.objects(room_id=room_id)
+    return bookings
 
 def create_booking(user_id, data):
     # Lấy thông tin  từ dữ liệu gửi lên
@@ -104,8 +107,8 @@ def cancel_booking(booking_id):
 def checkin_booking(booking_id):
     try:
         booking = Booking.objects.get(book_id=booking_id)
-        if booking.status not in ["confirmed", "pending"]:
-            raise ValidationError("Only confirmed or pending bookings can be checked in.")
+        if booking.status not in ["confirmed"]:
+            raise ValidationError("Only confirmed bookings can be checked in.")
         booking.status = "checked_in"
         booking.save()
     except DoesNotExist:

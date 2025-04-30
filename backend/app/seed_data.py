@@ -1,7 +1,19 @@
 from .models import User, Room, Booking
 from .config import init_db
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
+
+def generate_next_7_days_slots():
+    slots = []
+    base_times = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"]
+    
+    for i in range(7):
+        day = datetime.now(timezone.utc).date() + timedelta(days=i)
+        time_slots = [Room.Slot.TimeSlot(time=t, status="available") for t in base_times]
+        slot = Room.Slot(date=day.isoformat(), time_slot=time_slots)
+        slots.append(slot)
+
+    return slots
 
 admin = User(
     user_id="20",
@@ -32,58 +44,26 @@ room1 = Room(
     room_id="1",
     name="Room 1",
     capacity="5",
+    status="available",
     devices=[
         Room.Device(devices_name="Projector", devices_status="off"),
         Room.Device(devices_name="Whiteboard", devices_status="off"),
         Room.Device(devices_name="Speaker", devices_status="off")
     ],
-    status="available",
-    slots=[
-        Room.Slot(
-            date="2025-03-24",
-            time_slot=[
-                Room.Slot.TimeSlot(time="09:00", status="available"),
-                Room.Slot.TimeSlot(time="10:00", status="available"),
-                Room.Slot.TimeSlot(time="11:00", status="available"),
-                Room.Slot.TimeSlot(time="12:00", status="available"),
-                Room.Slot.TimeSlot(time="13:00", status="available"),
-                Room.Slot.TimeSlot(time="14:00", status="available"),
-                Room.Slot.TimeSlot(time="15:00", status="available"),
-                Room.Slot.TimeSlot(time="16:00", status="available"),
-                Room.Slot.TimeSlot(time="17:00", status="available"),
-                Room.Slot.TimeSlot(time="18:00", status="available")
-            ]
-        )
-    ]
+    slots=generate_next_7_days_slots()
 )
 
 room2 = Room(
     room_id="2",
     name="Room 2",
     capacity="10",
+    status="available",
     devices=[
         Room.Device(devices_name="Projector", devices_status="on"),
         Room.Device(devices_name="Whiteboard", devices_status="on"),
         Room.Device(devices_name="Speaker", devices_status="on")
     ],
-    status="booked",
-    slots=[
-        Room.Slot(
-            date="2025-03-24",
-            time_slot=[
-                Room.Slot.TimeSlot(time="09:00", status="booked"),
-                Room.Slot.TimeSlot(time="10:00", status="booked"),
-                Room.Slot.TimeSlot(time="11:00", status="booked"),
-                Room.Slot.TimeSlot(time="12:00", status="booked"),
-                Room.Slot.TimeSlot(time="13:00", status="booked"),
-                Room.Slot.TimeSlot(time="14:00", status="booked"),
-                Room.Slot.TimeSlot(time="15:00", status="booked"),
-                Room.Slot.TimeSlot(time="16:00", status="booked"),
-                Room.Slot.TimeSlot(time="17:00", status="booked"),
-                Room.Slot.TimeSlot(time="18:00", status="available")
-            ]
-        )
-    ]
+    slots=generate_next_7_days_slots()
 
 )
 
@@ -92,9 +72,9 @@ booking1 = Booking(
     book_id="1",
     user_id="2",
     room_id="2",
-    checkin=datetime(2025, 3, 24, 9, 0, tzinfo=timezone.utc),
-    checkout=datetime(2025, 3, 24, 17, 0, tzinfo=timezone.utc),
-    status="checked_in",
+    checkin=datetime(2025, 5, 1, 9, 0, tzinfo=timezone.utc),
+    checkout=datetime(2025, 5, 1, 17, 0, tzinfo=timezone.utc),
+    status="confirmed",
     book_slot="09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00, 16:00, 17:00",
     created_at=datetime.now(timezone.utc),  
     updated_at=datetime.now(timezone.utc)  

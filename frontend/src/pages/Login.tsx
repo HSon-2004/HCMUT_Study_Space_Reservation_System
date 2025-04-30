@@ -44,7 +44,7 @@ const Login = () => {
       className="min-h-screen w-full flex items-center justify-center relative text-white"
       style={{
         backgroundImage:
-          "url('https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=1740&q=80')",
+          "url('/images/background_hcmut.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -54,7 +54,7 @@ const Login = () => {
 
       {/* Logo */}
       <img
-        src="/public/images/logohcmut.png"
+        src="/images/logohcmut.png"
         alt="Logo"
         className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
       />

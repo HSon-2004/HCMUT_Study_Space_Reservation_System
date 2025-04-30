@@ -6,6 +6,7 @@ import HomePage from "../pages/HomePage";
 import BookingPage from "../pages/BookingPage";
 import ConfirmPage from "../pages/ConfirmPage";
 import QRCodePage from "../pages/QRcode";
+import CheckinPage from "../pages/CheckinPage";
 
 
 const AppRoutes = () => {
@@ -19,7 +20,7 @@ const AppRoutes = () => {
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/confirm" element={<ConfirmPage />} />
         <Route path="/qr-code" element={<QRCodePage />} />
-
+        <Route path="/checkin" element={<CheckinPage />} />
 
       </Routes>
     </Router>

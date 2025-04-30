@@ -30,6 +30,12 @@ def get_all_bookings():
     return jsonify([serialize_booking(b) for b in bookings]), 200
 
 
+# GET /bookings/room/<room_id> - Lấy tất cả booking của 1 phòng
+@booking_bp.route('/bookings/room/<room_id>', methods=['GET'])
+def get_bookings_by_room(room_id):
+    bookings = booking_service.get_bookings_by_room(room_id)
+    return jsonify([serialize_booking(b) for b in bookings]), 200
+
 # GET /bookings/<booking_id> - Lấy thông tin 1 booking
 @booking_bp.route('/bookings/<booking_id>', methods=['GET'])
 def get_booking_by_id(booking_id):

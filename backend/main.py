@@ -3,10 +3,12 @@ from flask_cors import CORS
 from app.config import Config, init_db
 from app.seed_data import seed_data
 
+
 # Import blueprints correctly
 from app.routes import iot_bp
 from app.routes import booking_bp
 from app.routes import room_bp
+from app.routes import user_bp
 
 def create_app():
     app = Flask(__name__)
@@ -21,7 +23,7 @@ def create_app():
     app.register_blueprint(iot_bp, url_prefix='/api')
     app.register_blueprint(booking_bp, url_prefix='/api')
     app.register_blueprint(room_bp, url_prefix='/api')  # Make sure this is included
-
+    app.register_blueprint(user_bp, url_prefix='/api')  # Assuming user_bp is defined
     # Error handlers
     @app.errorhandler(404)
     def not_found(e):
