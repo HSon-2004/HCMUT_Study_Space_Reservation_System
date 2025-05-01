@@ -1,6 +1,8 @@
 from .models import User, Room, Booking
 from .config import init_db
 from datetime import datetime, timezone, timedelta
+from werkzeug.security import generate_password_hash
+import uuid
 
 
 def generate_next_7_days_slots():
@@ -16,32 +18,32 @@ def generate_next_7_days_slots():
     return slots
 
 admin = User(
-    user_id="20",
+    user_id=str(uuid.uuid4()),
     username="admin",
     email="admin@example.com",
-    password="admin",
+    password=generate_password_hash("admin"),
     role="admin"
 )
 
 student = User(
-    user_id="2",
+    user_id=str(uuid.uuid4()),
     username="student",
     email="student@example.com",
-    password="student",
+    password=generate_password_hash("student"),
     role="student"
 )
 
 teacher = User(
-    user_id="3",
+    user_id=str(uuid.uuid4()),
     username="teacher",
     email="teacher@example.com",
-    password="teacher",
+    password=generate_password_hash("teacher"),
     role="teacher"
 )
 
 
 room1 = Room(
-    room_id="1",
+    room_id=str(uuid.uuid4()),
     name="Room 1",
     capacity="5",
     status="available",
@@ -54,7 +56,7 @@ room1 = Room(
 )
 
 room2 = Room(
-    room_id="2",
+    room_id=str(uuid.uuid4()),
     name="Room 2",
     capacity="10",
     status="available",
@@ -69,9 +71,10 @@ room2 = Room(
 
 
 booking1 = Booking(
-    book_id="1",
-    user_id="2",
-    room_id="2",
+    book_id=str(uuid.uuid4()),
+    user_id=student.user_id,
+    room_id=room2.room_id,
+    room_name=room2.name,
     checkin=datetime(2025, 5, 1, 9, 0, tzinfo=timezone.utc),
     checkout=datetime(2025, 5, 1, 17, 0, tzinfo=timezone.utc),
     status="confirmed",

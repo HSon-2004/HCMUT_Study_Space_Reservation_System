@@ -4,15 +4,8 @@ import UserMenu from "../components/UserMenu";
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const userInfo = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-  };
+  // load user info from local storage
 
-  const reservations = [
-    { date: "2024-03-10", time: "10:00 - 12:00", room: "A101" },
-    { date: "2024-03-12", time: "14:00 - 16:00", room: "B203" },
-  ];
 
   return (
     <div
@@ -48,7 +41,7 @@ const HomePage = () => {
           </button>
 
           <button
-            onClick={() => navigate("/cancel")}
+            onClick={() => navigate("/myreservations")}
             className="px-10 py-4 rounded-xl border border-red-300 bg-red-500/20 backdrop-blur-md text-white text-xl font-semibold shadow-lg hover:scale-105 hover:bg-red-500/40 hover:border-white transition-all duration-300"
           >
             ❌ Cancel Booking
@@ -57,7 +50,7 @@ const HomePage = () => {
       </div>
 
       {/* User Menu */}
-      <UserMenu userInfo={userInfo} reservations={reservations} />
+      <UserMenu />
     </div>
   );
 };

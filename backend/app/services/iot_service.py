@@ -1,6 +1,5 @@
 from app.models import Room
 from app.schemas import DeviceSchema
-from app.utils import IsAdmin
 from mongoengine.errors import NotUniqueError
 
 class IoTService:

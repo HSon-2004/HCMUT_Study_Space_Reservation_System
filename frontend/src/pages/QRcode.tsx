@@ -10,14 +10,12 @@ const QRPage: React.FC = () => {
     return <div className="text-center mt-10 text-red-500">No booking info.</div>;
   }
 
-
-  // Tạo chuỗi dữ liệu để tạo mã QR (có thể là ID đặt phòng hoặc thông tin khác)
   const encodedRoomName = encodeURIComponent(state.roomName);
-
+  //const localIP = import.meta.env.VITE_LOCAL_IP;
   const bookingData = {
-    URL: `http://192.168.1.5:5173/checkin?book_id=${state.book_id}&room_name=${encodedRoomName}`,
+    URL: `http://localhost:5173/checkin?book_id=${state.book_id}&room_name=${encodedRoomName}&checkin=${state.checkin}&checkout=${state.checkout}`,
   };
-
+  
 
   const qrCodeValue = JSON.stringify(bookingData); // Dữ liệu sẽ được mã hóa thành mã QR
 
@@ -49,6 +47,19 @@ const QRPage: React.FC = () => {
         <div className="flex justify-center items-center">
           <QRCode value={qrCodeValue} size={256} />
         </div>
+        
+        <p className="mb-4">
+          Check-in link:{" "}
+          <a
+            href={`http://localhost:5173/checkin?book_id=${state.book_id}&room_name=${encodedRoomName}&checkin=${state.checkin}&checkout=${state.checkout}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline hover:text-blue-800"
+          >
+            here
+          </a>
+        </p>
+
 
         <div className="mt-6">
           <button

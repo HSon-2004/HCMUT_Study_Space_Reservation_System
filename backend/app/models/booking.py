@@ -2,11 +2,12 @@ from mongoengine import Document, StringField, DateTimeField
 from datetime import datetime, timezone
 
 class Booking(Document):
-    STATUS_CHOICES = ('confirmed', 'cancelled', 'checked_in', 'checked_out')
+    STATUS_CHOICES = ('confirmed', 'checked_in')
 
     book_id = StringField(required=True, unique=True)
     user_id = StringField(required=True)
     room_id = StringField(required=True)
+    room_name = StringField(required=True)
     checkin = DateTimeField(required=True)
     checkout = DateTimeField(required=True)
     status = StringField(required=True, choices=STATUS_CHOICES)

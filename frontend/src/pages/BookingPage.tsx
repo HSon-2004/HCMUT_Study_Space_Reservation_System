@@ -4,19 +4,10 @@ import UserMenu from "../components/UserMenu";
 import RoomCard, { Room } from "../components/RoomCard";
 import RoomModal from "../components/RoomModal";
 
-const HomePage: React.FC = () => {
+const BookingPage: React.FC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
-  const userInfo = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-  };
-
-  const reservations = [
-    { date: "2024-03-10", time: "10:00 - 12:00", room: "A101" },
-    { date: "2024-03-12", time: "14:00 - 16:00", room: "B203" },
-  ];
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -24,7 +15,7 @@ const HomePage: React.FC = () => {
         const res = await axios.get<Room[]>("http://localhost:5000/api/rooms");
         setRooms(res.data);
       } catch (error) {
-        console.error("❌ Failed to fetch rooms:", error);
+        console.error("Failed to fetch rooms:", error);
       }
     };
 
@@ -68,9 +59,9 @@ const HomePage: React.FC = () => {
       <RoomModal room={selectedRoom} onClose={() => setSelectedRoom(null)} />
 
       {/* User info & reservation panel */}
-      <UserMenu userInfo={userInfo} reservations={reservations} />
+      <UserMenu/>
     </div>
   );
 };
 
-export default HomePage;
+export default BookingPage;

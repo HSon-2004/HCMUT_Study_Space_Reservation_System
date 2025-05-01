@@ -1,35 +1,72 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
+import axios from "axios";
 
 const ConfirmPage: React.FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
   if (!state || !state.slots) {
-    return <div className="text-center mt-10 text-red-500">No booking info.</div>;
+    return <div className="text-center mt-10 text-red-500">No booking info available.</div>;
   }
 
-  const { roomName, slots } = state;
-  const book_id = 1;
-  const userInfo = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-  };
+  const { room_id, checkin, checkout, roomName, slots } = state;
 
-  const reservations = [
-    { date: "2024-03-10", time: "10:00 - 12:00", room: "A101" },
-    { date: "2024-03-12", time: "14:00 - 16:00", room: "B203" },
-  ];
+  const handleConfirmBooking = async () => {
+    try {
+      interface BookingResponse {
+        book_id: string;
+      }
+      console.log("Sending booking payload:", {
+        room_id,
+        checkin,
+        checkout,
+        book_slot: slots.map((s: any) => s.time).join(", ")
+      });
+      const response = await axios.post<BookingResponse>(
+        `http://localhost:5000/api/bookings/create`,
+        {
+          room_id,
+          checkin,
+          checkout,
+          book_slot: slots.map((s: any) => s.time).join(", ") 
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      // check error response
+      if (response.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+        return;
+      }
+      if (response.status !== 201) {
+        throw new Error(`Failed to confirm booking. Status code: ${response.status}`);
+      }
 
-  const handleConfirmBooking = () => {
-    // Điều hướng đến trang QRPage với thông tin booking
-    navigate("/qr-code", {
-      state: {
-        roomName,
-        book_id,
-      },
-    });
+      if (response.data && response.data.book_id) {
+        // Navigate to QR code page with book_id from the response
+        navigate("/qr-code", {
+          state: {
+            roomName,
+            book_id: response.data.book_id,
+            checkin,
+            checkout,
+          },
+        });
+        alert("Booking confirmed successfully!");
+      } else {
+        throw new Error("Failed to confirm booking1.");
+      }
+    } catch (error) {
+      console.error("Error confirming booking:", error);
+      alert("Failed to confirm booking2.");
+    }
   };
 
   return (
@@ -52,7 +89,7 @@ const ConfirmPage: React.FC = () => {
       />
 
       {/* User Menu */}
-      <UserMenu userInfo={userInfo} reservations={reservations} />
+      <UserMenu />
 
       {/* Main Content */}
       <div className="relative z-10 bg-white text-black p-8 rounded-xl shadow-xl w-full max-w-lg text-center mt-20">
@@ -64,11 +101,15 @@ const ConfirmPage: React.FC = () => {
         <div className="mt-4 mb-6 text-left">
           <h2 className="font-semibold mb-2">Selected Slots:</h2>
           <ul className="list-disc list-inside">
-            {slots.map((slot: any, idx: number) => (
-              <li key={idx}>
-                {slot.date} - {slot.time}
-              </li>
-            ))}
+            {slots && slots.length > 0 ? (
+              slots.map((slot: any, idx: number) => (
+                <li key={idx}>
+                  {slot.date} - {slot.time}
+                </li>
+              ))
+            ) : (
+              <li>No slots selected</li>
+            )}
           </ul>
         </div>
 

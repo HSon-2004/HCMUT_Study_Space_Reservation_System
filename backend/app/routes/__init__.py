@@ -9,7 +9,7 @@ from .user_routes import user_bp
 # api_bp.register_blueprint(booking_bp)
 # api_bp.register_blueprint(user_bp)
 
-from .user_routes import user_bp
+# from .user_routes import user_bp
 
-def init_routes(app):
-    app.register_blueprint(user_bp, url_prefix='/api/users')
+# def init_routes(app):
+#     app.register_blueprint(user_bp, url_prefix='/api/users')

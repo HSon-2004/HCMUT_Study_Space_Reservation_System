@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from mongoengine.errors import DoesNotExist, ValidationError
 from app.services import booking_service
-from app.utils.helpers import serialize_booking, IsAdmin
+from app.utils import serialize_booking, token_required
 from app.models.booking import Booking
 
 booking_bp = Blueprint('booking', __name__)
@@ -10,20 +10,19 @@ booking_bp = Blueprint('booking', __name__)
 
 # GET /bookings - Lấy tất cả booking của user hiện tại
 @booking_bp.route('/bookings', methods=['GET'])
+@token_required
 def get_user_bookings():
-    user_id = request.headers.get("User-ID")
-    if not user_id:
-        return jsonify({"error": "Missing User-ID"}), 400
-
-    bookings = Booking.objects(user_id=user_id)
+    user_id = request.user_id
+    bookings = booking_service.get_user_bookings(user_id)
     return jsonify([serialize_booking(b) for b in bookings]), 200
 
 
 # GET /bookings/all - Chỉ admin
 @booking_bp.route('/bookings/all', methods=['GET'])
+@token_required
 def get_all_bookings():
-    user_id = request.headers.get("User-ID")
-    if not IsAdmin(user_id):
+    role = request.role
+    if role != 'admin':
         return jsonify({"error": "Unauthorized"}), 403
 
     bookings = booking_service.get_all_bookings()
@@ -48,23 +47,26 @@ def get_booking_by_id(booking_id):
 
 # POST /bookings - Tạo mới 1 booking
 @booking_bp.route('/bookings/create', methods=['POST'])
+@token_required
 def create_booking():
     data = request.get_json()
-    user_id = request.headers.get("User-ID")
-    if not user_id:
-        return jsonify({'error': 'Missing User-ID'}), 400
-
+    user_id = request.user_id
     try:
-        booking = booking_service.create_booking(user_id=user_id, data=data)
-        return jsonify({'message': 'Booking created successfully', 'id': str(booking.id)}), 201
+        booking = booking_service.create_booking(user_id, data)
+        return jsonify({'message': 'Booking created successfully', 'book_id': str(booking.book_id)}), 201
     except (ValidationError, KeyError) as e:
         return jsonify({'error': str(e)}), 400
 
 
 # PUT /bookings/<booking_id> - Cập nhật booking
 @booking_bp.route('/bookings/<booking_id>', methods=['PUT'])
+@token_required
 def update_booking(booking_id):
     data = request.get_json()
+    role = request.role
+    if role != 'admin':
+        return jsonify({"error": "Unauthorized"}), 403
+    
     try:
         booking = booking_service.update_booking(booking_id, data)
         return jsonify({'message': 'Booking updated successfully'}), 200
@@ -74,9 +76,12 @@ def update_booking(booking_id):
 
 # DELETE /bookings/<booking_id> - Xóa booking
 @booking_bp.route('/bookings/<booking_id>', methods=['DELETE'])
+@token_required
 def delete_booking(booking_id):
+    user_id = request.user_id
+    role = request.role
     try:
-        booking_service.cancel_booking(booking_id)
+        booking_service.cancel_booking(user_id, role, booking_id)
         return jsonify({'message': 'Booking cancelled successfully'}), 200
     except DoesNotExist:
         return jsonify({'error': 'Booking not found'}), 404
@@ -84,12 +89,15 @@ def delete_booking(booking_id):
 
 # POST /bookings/<booking_id>/checkin - Check-in phòng
 @booking_bp.route('/bookings/<booking_id>/checkin', methods=['POST'])
+@token_required
 def checkin_booking(booking_id):
+    user_id = request.user_id
     try:
-        booking_service.checkin_booking(booking_id)
+        booking_service.checkin_booking(user_id, booking_id)
         return jsonify({'message': 'Checked in successfully'}), 200
     except DoesNotExist:
         return jsonify({'error': 'Booking not found'}), 404
     except ValidationError as e:
         return jsonify({'error': str(e)}), 400
+
 

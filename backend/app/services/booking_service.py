@@ -2,11 +2,18 @@ from datetime import datetime
 from mongoengine.errors import DoesNotExist, ValidationError
 from app.models import Booking
 from app.models import Room
+import jwt
+from app.config import Config
+import uuid
+
 
 
 def get_all_bookings():
     return Booking.objects()
 
+def get_user_bookings(user_id):
+    bookings = Booking.objects(user_id=user_id)
+    return bookings
 
 def get_booking_by_id(booking_id):
     booking = Booking.objects.get(book_id=booking_id)
@@ -25,6 +32,7 @@ def create_booking(user_id, data):
 
     if not room_id or not checkin or not checkout or not book_slot:
         raise KeyError("Missing required fields: room_id, checkin, checkout, book_slot")
+
 
     # Chuyển string time thành datetime object
     try:
@@ -48,20 +56,15 @@ def create_booking(user_id, data):
         if time not in available_times:
             raise ValidationError(f"Time slot {time} is not available")
 
-    # Tạo book_id duy nhất
-    last_booking = Booking.objects.order_by('-book_id').first()
-    if last_booking and last_booking.book_id.isdigit():
-        new_book_id = str(int(last_booking.book_id) + 1)
-    else:
-        new_book_id = "1"
 
     # Create the booking
     booking = Booking(
-        book_id=new_book_id,  # Thêm new_book_id
+        book_id=str(uuid.uuid4()),  # Thêm new_book_id
         user_id=user_id,
         room_id=room_id,
         checkin=checkin_dt,
         checkout=checkout_dt,
+        room_name=room.name,
         status = data.get('status', 'confirmed'),  # Gán trạng thái mặc định là confirmed
         book_slot=book_slot
     )
@@ -96,17 +99,28 @@ def update_booking(booking_id, data):
     return booking
 
 
-def cancel_booking(booking_id):
-    try:
+def cancel_booking(user_id, role, booking_id):
+    # Kiểm tra booking có thuộc về user không
+    if role != 'admin':
+        booking = Booking.objects.get(book_id=booking_id, user_id=user_id)
+        if not booking:
+            raise ValidationError("Booking not found or does not belong to the user")
+    else:
         booking = Booking.objects.get(book_id=booking_id)
-        booking.status = "cancelled"
-        booking.save()
+        if not booking:
+            raise ValidationError("Booking not found")
+
+    try:
+        booking.delete()
     except DoesNotExist:
         raise DoesNotExist("Booking not found")
 
-def checkin_booking(booking_id):
+def checkin_booking(user_id, booking_id):
+    booking = Booking.objects.get(book_id=booking_id, user_id=user_id)
+    if not booking:
+        raise ValidationError("Booking not found or does not belong to the user")
+    
     try:
-        booking = Booking.objects.get(book_id=booking_id)
         if booking.status not in ["confirmed"]:
             raise ValidationError("Only confirmed bookings can be checked in.")
         booking.status = "checked_in"

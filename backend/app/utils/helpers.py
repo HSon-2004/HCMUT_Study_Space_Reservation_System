@@ -1,4 +1,7 @@
 from app.models import User
+from app.config import Config
+from datetime import datetime
+import jwt
 
 def serialize_booking(booking):
     return {
@@ -6,6 +9,7 @@ def serialize_booking(booking):
         "book_id": booking.book_id,
         "user_id": booking.user_id,
         "room_id": booking.room_id,
+        "room_name": booking.room_name,
         "checkin": booking.checkin.isoformat(),
         "checkout": booking.checkout.isoformat(),
         "status": booking.status,
@@ -14,6 +18,3 @@ def serialize_booking(booking):
         "updated_at": booking.updated_at.isoformat()
     }
 
-def IsAdmin(user_id):
-    user = User.objects(user_id=user_id).first()
-    return user and user.role == "admin"

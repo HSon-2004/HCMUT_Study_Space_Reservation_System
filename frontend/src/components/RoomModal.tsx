@@ -45,7 +45,7 @@ const RoomModal: React.FC<RoomModalProps> = ({ room, onClose }) => {
 
         setBookedSlots(newBooked);
       } catch (error) {
-        console.error("❌ Error fetching bookings:", error);
+        console.error("Error fetching bookings:", error);
       }
     };
 
@@ -71,11 +71,19 @@ const RoomModal: React.FC<RoomModalProps> = ({ room, onClose }) => {
   const handleConfirm = () => {
     if (selectedSlots.length === 0) return;
 
+    const padTime = (t: string) => t.padStart(5, "0");
+
+    const sorted = [...selectedSlots].sort((a, b) =>
+      `${a.date}T${padTime(a.time)}`.localeCompare(`${b.date}T${padTime(b.time)}`)
+    );
+
     navigate("/confirm", {
       state: {
-        roomId: room._id,
+        room_id: room.room_id,
+        checkin: `${sorted[0].date}T${padTime(sorted[0].time)}:00`,
+        checkout: `${sorted[sorted.length - 1].date}T${padTime(sorted[sorted.length - 1].time)}:00`,
         roomName: room.name,
-        slots: selectedSlots,
+        slots: sorted.map((s) => ({ date: s.date, time: padTime(s.time) })), // pad all times
       },
     });
   };
@@ -158,7 +166,7 @@ const RoomModal: React.FC<RoomModalProps> = ({ room, onClose }) => {
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
               onClick={handleConfirm}
             >
-              ✅ Confirm ({selectedSlots.length})
+              Confirm ({selectedSlots.length})
             </button>
           </div>
         )}

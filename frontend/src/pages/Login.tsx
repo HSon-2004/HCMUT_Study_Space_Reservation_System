@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
+interface JwtPayload {
+  exp: number; 
+}
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -8,29 +12,52 @@ const Login = () => {
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode<JwtPayload>(token);
+        const now = Date.now() / 1000;
+  
+        if (decoded.exp && decoded.exp > now) {
+          navigate("/home");
+        } else {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login");
+        }
+      } catch (err) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");  // Nếu lỗi decode cũng quay lại login
+      }
+    }
+  }, [navigate]);
+  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-  
+
     try {
-      const response = await fetch("http:localhost:3000/auth/login", {
+      const response = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Invalid email or password!");
       }
-  
+
       const data = await response.json();
-  
-      localStorage.setItem("token", data.accessToken);
+
+      localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-  
+
       navigate("/home");
     } catch (err: any) {
       setError(err.message || "Login failed!");
@@ -49,17 +76,14 @@ const Login = () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-0" />
 
-      {/* Logo */}
       <img
         src="/images/logohcmut.png"
         alt="Logo"
         className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
       />
 
-      {/* Login Form */}
       <div className="z-10 w-full max-w-md bg-white/10 backdrop-blur-2xl p-10 rounded-3xl shadow-xl border border-white/20 space-y-6">
         <h2 className="text-4xl font-bold text-center text-white drop-shadow">
           🔐 Sign In
@@ -77,7 +101,7 @@ const Login = () => {
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="glass-input w-full"
+              className="glass-input text-black/80 w-full"
               placeholder="Enter your email"
             />
           </div>
@@ -89,7 +113,7 @@ const Login = () => {
               value={password}
               required
               onChange={(e) => setPassword(e.target.value)}
-              className="glass-input w-full"
+              className="glass-input text-black/80 w-full"
               placeholder="Enter your password"
             />
           </div>
@@ -111,7 +135,6 @@ const Login = () => {
         </p>
       </div>
 
-      {/* Custom style */}
       <style>
         {`
         .glass-input {

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -12,28 +13,34 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-  
+
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
-      const response = await fetch("http://localhost:3000/auth/register", {
+      const response = await fetch("http://localhost:5000/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          username,
+          password,
+          role: "student", // Hoặc "teacher", "admin", tuỳ quyền khởi tạo
+        }),
       });
-  
+
+      const data = await response.json();
+
       if (!response.ok) {
-        const resData = await response.json();
-        throw new Error(resData.message || "Registration failed!");
+        throw new Error(data.error || "Registration failed!");
       }
-  
+
       navigate("/login");
     } catch (err: any) {
       setError(err.message || "Something went wrong!");
@@ -41,7 +48,6 @@ const Register = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div
@@ -55,14 +61,12 @@ const Register = () => {
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-0" />
 
-      {/* Logo */}
       <img
-        src="/public/images/logohcmut.png"
+        src="/images/logohcmut.png"
         alt="Logo"
         className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
       />
 
-      {/* Form Register */}
       <div className="z-10 w-full max-w-md bg-white/10 backdrop-blur-2xl p-10 rounded-3xl shadow-xl border border-white/20 space-y-6">
         <h2 className="text-4xl font-bold text-center text-white drop-shadow">
           📝 Create Account
@@ -74,13 +78,25 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
+            <label className="block mb-1 text-white/80 text-sm">Username</label>
+            <input
+              type="text"
+              value={username}
+              required
+              onChange={(e) => setUsername(e.target.value)}
+              className="glass-input text-black/80 w-full"
+              placeholder="Enter your username"
+            />
+          </div>
+
+          <div>
             <label className="block mb-1 text-white/80 text-sm">Email</label>
             <input
               type="email"
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="glass-input w-full"
+              className="glass-input text-black/80 w-full"
               placeholder="Enter your email"
             />
           </div>
@@ -92,7 +108,7 @@ const Register = () => {
               value={password}
               required
               onChange={(e) => setPassword(e.target.value)}
-              className="glass-input w-full"
+              className="glass-input text-black/80 w-full"
               placeholder="Enter your password"
             />
           </div>
@@ -106,7 +122,7 @@ const Register = () => {
               value={confirmPassword}
               required
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className={`glass-input w-full ${
+              className={`glass-input text-black/80 w-full ${
                 confirmPassword && password !== confirmPassword
                   ? "border-red-400 focus:ring-red-400"
                   : ""
@@ -132,7 +148,6 @@ const Register = () => {
         </p>
       </div>
 
-      {/* Custom input style */}
       <style>
         {`
         .glass-input {
