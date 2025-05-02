@@ -51,8 +51,9 @@ def get_booking_by_id(booking_id):
 def create_booking():
     data = request.get_json()
     user_id = request.user_id
+    user_name = request.username
     try:
-        booking = booking_service.create_booking(user_id, data)
+        booking = booking_service.create_booking(user_id, user_name, data)
         return jsonify({'message': 'Booking created successfully', 'book_id': str(booking.book_id)}), 201
     except (ValidationError, KeyError) as e:
         print(e)

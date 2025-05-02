@@ -23,13 +23,12 @@ def get_bookings_by_room(room_id):
     bookings = Booking.objects(room_id=room_id)
     return bookings
 
-def create_booking(user_id, data):
+def create_booking(user_id, user_name, data):
     # Lấy thông tin  từ dữ liệu gửi lên
     room_id = data.get('room_id')
     checkin = data.get('checkin')  
     checkout = data.get('checkout')  
     book_slot = data.get('book_slot')  
-    user_name = data.get('user_name')  
 
     if not room_id or not checkin or not checkout or not book_slot:
         raise KeyError("Missing required fields: room_id, checkin, checkout, book_slot")
