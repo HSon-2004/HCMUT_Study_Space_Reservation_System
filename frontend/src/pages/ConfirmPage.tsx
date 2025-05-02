@@ -28,6 +28,7 @@ const ConfirmPage: React.FC = () => {
         `http://localhost:5000/api/bookings/create`,
         {
           room_id,
+          user_name : JSON.parse(localStorage.getItem("user") || "{}").username,
           checkin,
           checkout,
           book_slot: slots.map((s: any) => s.time).join(", ") 

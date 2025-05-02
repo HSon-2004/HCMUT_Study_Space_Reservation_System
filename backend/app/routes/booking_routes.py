@@ -55,6 +55,7 @@ def create_booking():
         booking = booking_service.create_booking(user_id, data)
         return jsonify({'message': 'Booking created successfully', 'book_id': str(booking.book_id)}), 201
     except (ValidationError, KeyError) as e:
+        print(e)
         return jsonify({'error': str(e)}), 400
 
 

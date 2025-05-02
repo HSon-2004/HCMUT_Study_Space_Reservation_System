@@ -83,7 +83,7 @@ const RoomModal: React.FC<RoomModalProps> = ({ room, onClose }) => {
         checkin: `${sorted[0].date}T${padTime(sorted[0].time)}:00`,
         checkout: `${sorted[sorted.length - 1].date}T${padTime(sorted[sorted.length - 1].time)}:00`,
         roomName: room.name,
-        slots: sorted.map((s) => ({ date: s.date, time: padTime(s.time) })), // pad all times
+        slots: sorted.map((s) => ({ date: s.date, time: padTime(s.time) })),
       },
     });
   };

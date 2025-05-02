@@ -29,6 +29,7 @@ def create_booking(user_id, data):
     checkin = data.get('checkin')  
     checkout = data.get('checkout')  
     book_slot = data.get('book_slot')  
+    user_name = data.get('user_name')  
 
     if not room_id or not checkin or not checkout or not book_slot:
         raise KeyError("Missing required fields: room_id, checkin, checkout, book_slot")
@@ -64,6 +65,7 @@ def create_booking(user_id, data):
         room_id=room_id,
         checkin=checkin_dt,
         checkout=checkout_dt,
+        user_name=user_name,
         room_name=room.name,
         status = data.get('status', 'confirmed'),  # Gán trạng thái mặc định là confirmed
         book_slot=book_slot
