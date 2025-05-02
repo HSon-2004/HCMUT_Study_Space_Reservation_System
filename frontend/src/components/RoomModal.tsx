@@ -110,7 +110,8 @@ const RoomModal: React.FC<RoomModalProps> = ({ room, onClose }) => {
           <h3 className="text-lg font-semibold mb-2">📟 Devices:</h3>
           <ul className="list-disc list-inside">
             {room.devices.map((device, idx) => (
-              <li key={idx}>{device.devices_name}</li>
+              <li key={idx}>{device.devices_name} - {device.count ? device.count : '0'}
+              </li>
             ))}
           </ul>
         </div>

@@ -51,6 +51,15 @@ const UserMenu: React.FC = () => {
     navigate("/myreservations");
   };
 
+  const checkAdmin = () => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      return parsedUser.role === "admin";
+    }
+    return false;
+  }
+
   if (!username || !email) return null;
 
   return (
@@ -86,6 +95,17 @@ const UserMenu: React.FC = () => {
           >
             Log out
           </button>
+
+          {/* Admin */}
+          {checkAdmin() && (
+            <button
+              onClick={() => navigate("/admin")}
+              className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition"
+            >
+              Admin Panel
+            </button>
+          )}
+          
         </div>
       )}
     </div>

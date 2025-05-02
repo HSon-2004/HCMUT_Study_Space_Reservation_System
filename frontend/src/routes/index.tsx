@@ -10,6 +10,7 @@ import QRCodePage from "../pages/QRcode";
 import CheckinoutPage from "../pages/CheckinoutPage";
 import MyReservations from "../pages/MyReservations";
 import CancellingPage from "../pages/CancellingPage";
+import AdminPage from "../pages/AdminPage";
 
 const AppRoutes = () => {
   return (
@@ -76,6 +77,14 @@ const AppRoutes = () => {
               <CancellingPage />
             </PrivateRoute>
           } 
+        />
+        <Route 
+          path="/admin" 
+          element={
+            <PrivateRoute>
+              <AdminPage />
+            </PrivateRoute>
+          }
         />
       </Routes>
     </Router>

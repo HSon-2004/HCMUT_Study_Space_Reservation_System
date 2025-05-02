@@ -5,8 +5,10 @@ class UserCreate(BaseModel):
     username: constr(min_length=3, max_length=50)
     email: EmailStr
     password: constr(min_length=6)
-    role: Literal['admin', 'student', 'teacher']  # Gọn gàng và rõ ràng hơn regex
+    role: Literal['admin', 'student', 'teacher']
 
 class UserLogin(BaseModel):
     email: EmailStr
-    password: constr(min_length=6)
+    password: constr(min_length=3)
+
+

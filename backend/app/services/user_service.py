@@ -8,12 +8,7 @@ import jwt
 from app.config import Config
 
 
-def get_user_by_id(user_id):
-    try:
-        user = User.objects.get(user_id=user_id)
-        return user
-    except DoesNotExist:
-        return None
+
 
 class UserService:
     @staticmethod
@@ -61,3 +56,44 @@ class UserService:
                 "role": user.role
             }
         }, 200
+    
+    @staticmethod
+    def get_user_by_id(user_id):
+        try:
+            user = User.objects(user_id=user_id).first()
+            return user
+        except DoesNotExist:
+            return None
+
+    @staticmethod
+    def get_all_users():
+        users = User.objects()
+        return users
+    
+    @staticmethod
+    def update_user(user_id, user_data):
+        user = UserService.get_user_by_id(user_id)
+        if not user:
+            return {"error": "User not found"}, 404
+
+        if user_data["username"]:
+            user.username = user_data["username"]
+        if user_data["email"]:
+            user.email = user_data["email"]
+        if user_data["password"]:
+            user.password = generate_password_hash(user_data["password"])
+        if user_data["role"]:
+            user.role = user_data["role"]
+
+        user.save()
+        return {"message": "User updated successfully"}, 200
+    
+    @staticmethod
+    def delete_user(user_id):
+        user = UserService.get_user_by_id(user_id)
+        if not user:
+            return {"error": "User not found"}, 404
+
+        user.delete()
+        return {"message": "User deleted successfully"}, 200
+    

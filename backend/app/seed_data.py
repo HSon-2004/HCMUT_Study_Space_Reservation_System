@@ -1,21 +1,12 @@
 from .models import User, Room, Booking
 from .config import init_db
+from .utils import generate_next_7_days_slots
 from datetime import datetime, timezone, timedelta
 from werkzeug.security import generate_password_hash
 import uuid
 
 
-def generate_next_7_days_slots():
-    slots = []
-    base_times = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"]
-    
-    for i in range(7):
-        day = datetime.now(timezone.utc).date() + timedelta(days=i)
-        time_slots = [Room.Slot.TimeSlot(time=t, status="available") for t in base_times]
-        slot = Room.Slot(date=day.isoformat(), time_slot=time_slots)
-        slots.append(slot)
 
-    return slots
 
 admin = User(
     user_id=str(uuid.uuid4()),
@@ -48,9 +39,9 @@ room1 = Room(
     capacity="5",
     status="available",
     devices=[
-        Room.Device(devices_name="Projector", devices_status="off"),
-        Room.Device(devices_name="Whiteboard", devices_status="off"),
-        Room.Device(devices_name="Speaker", devices_status="off")
+        Room.Device(devices_name="Projector", count="1"),
+        Room.Device(devices_name="Whiteboard", count="10"),
+        Room.Device(devices_name="Speaker", count="2")
     ],
     slots=generate_next_7_days_slots()
 )
@@ -61,12 +52,54 @@ room2 = Room(
     capacity="10",
     status="available",
     devices=[
-        Room.Device(devices_name="Projector", devices_status="on"),
-        Room.Device(devices_name="Whiteboard", devices_status="on"),
-        Room.Device(devices_name="Speaker", devices_status="on")
+        Room.Device(devices_name="Projector", count="3"),
+        Room.Device(devices_name="Whiteboard", count="9"),
+        Room.Device(devices_name="Speaker", count="5")
     ],
     slots=generate_next_7_days_slots()
 
+)
+
+room3 = Room(
+    room_id=str(uuid.uuid4()),
+    name="Room 3",
+    capacity="20",
+    status="available",
+    devices=[
+        Room.Device(devices_name="Projector", count="2"),
+        Room.Device(devices_name="Whiteboard", count="5"),
+        Room.Device(devices_name="Speaker", count="10"),
+        Room.Device(devices_name="Computer", count="20")
+    ],
+    slots=generate_next_7_days_slots()
+)
+
+room4 = Room(
+    room_id=str(uuid.uuid4()),
+    name="Room 4",
+    capacity="15",
+    status="available",
+    devices=[
+        Room.Device(devices_name="Projector", count="1"),
+        Room.Device(devices_name="Whiteboard", count="3"),
+        Room.Device(devices_name="Speaker", count="5"),
+        Room.Device(devices_name="Computer", count="10")
+    ],
+    slots=generate_next_7_days_slots()
+)
+
+room5 = Room(
+    room_id=str(uuid.uuid4()),
+    name="Room 5",
+    capacity="30",
+    status="available",
+    devices=[
+        Room.Device(devices_name="Projector", count="2"),
+        Room.Device(devices_name="Whiteboard", count="10"),
+        Room.Device(devices_name="Speaker", count="15"),
+        Room.Device(devices_name="Computer", count="30")
+    ],
+    slots=generate_next_7_days_slots()
 )
 
 
@@ -74,6 +107,7 @@ booking1 = Booking(
     book_id=str(uuid.uuid4()),
     user_id=student.user_id,
     room_id=room2.room_id,
+    user_name=student.username,
     room_name=room2.name,
     checkin=datetime(2025, 5, 1, 9, 0, tzinfo=timezone.utc),
     checkout=datetime(2025, 5, 1, 17, 0, tzinfo=timezone.utc),
@@ -95,4 +129,7 @@ def seed_data():
     teacher.save()
     room1.save()
     room2.save()
+    room3.save()
+    room4.save()
+    room5.save()
     booking1.save()

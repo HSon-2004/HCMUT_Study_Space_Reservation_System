@@ -2,7 +2,7 @@ import React from "react";
 
 export interface Device {
   devices_name: string;
-  devices_status: string;
+  count: string;
 }
 
 export interface TimeSlot {
@@ -16,7 +16,6 @@ export interface Slot {
 }
 
 export interface Room {
-  _id: string;
   room_id: string;
   name: string;
   capacity: string;

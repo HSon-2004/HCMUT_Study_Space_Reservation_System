@@ -10,7 +10,7 @@ class Room(Document):
     devices = ListField(EmbeddedDocumentField('Device'))
     class Device(EmbeddedDocument):
         devices_name = StringField(required=True)
-        devices_status = StringField(required=True)
+        count = StringField(required=True)
     
    
     slots = ListField(EmbeddedDocumentField('Slot'))

@@ -10,7 +10,7 @@ class SlotSchema(Schema):
 
 class DeviceSchema(Schema):
     devices_name = fields.String(required=True)
-    devices_status = fields.String(required=True)
+    count = fields.String(required=True)
 
 class RoomSchema(Schema):
     room_id = fields.String(required=True)

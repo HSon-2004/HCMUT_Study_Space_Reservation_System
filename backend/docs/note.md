@@ -43,6 +43,31 @@ DELETE /rooms/<room_id>/devices/<devices_id> : Delete a device
 
 POST /rooms/<room_id>/devices : Create a new device
 
+# Admin Panel
+
+## 1. Bookings
+GET /api/bookings/all : Retrieve all bookings
+GET /api/bookings/<booking_id> : Retrieve a booking by ID
+POST /api/bookings/create : Create a new booking (`user_id` of admin)
+PUT /api/bookings/<booking_id> : Update an existing booking 
+DELETE /api/bookings/<booking_id> : Cancel a booking
+
+## 2. Rooms
+GET /api/rooms : Retrieve all rooms
+GET /api/rooms/<room_id> : Retrieve a room by ID
+POST /api/rooms/create : Create a new room
+PUT /api/rooms/<room_id>/update : Update an existing room
+DELETE /api/rooms/<room_id> : Delete a room
+
+## 3. Users
+POST /api/users/create : Create a new user
+GET /api/users : Retrieve all users
+GET /api/users/<user_id> : Retrieve a user by ID
+PUT /api/users/<user_id> : Update an existing user
+DELETE /api/users/<user_id> : Delete a user
+
+
+
 # Database Schema
 
 ## 1. User

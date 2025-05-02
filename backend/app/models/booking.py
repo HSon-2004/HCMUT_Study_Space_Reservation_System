@@ -7,12 +7,12 @@ class Booking(Document):
     book_id = StringField(required=True, unique=True)
     user_id = StringField(required=True)
     room_id = StringField(required=True)
+    user_name = StringField(required=True)
     room_name = StringField(required=True)
     checkin = DateTimeField(required=True)
     checkout = DateTimeField(required=True)
     status = StringField(required=True, choices=STATUS_CHOICES)
     book_slot = StringField(required=True)
-    qr_code_data = StringField()  # ✅ Trường mới để lưu mã QR
 
     created_at = DateTimeField(default=datetime.now(timezone.utc))
     updated_at = DateTimeField(default=datetime.now(timezone.utc))
