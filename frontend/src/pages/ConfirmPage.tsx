@@ -85,7 +85,9 @@ const ConfirmPage: React.FC = () => {
       <img
         src="/images/logohcmut.png"
         alt="Logo"
-        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
+        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg cursor-pointer"
+        onClick={() => navigate('/home')}
+        title="Go to Home"
       />
 
       {/* User Menu */}

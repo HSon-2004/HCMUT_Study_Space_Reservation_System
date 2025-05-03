@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import UserMenu from "../components/UserMenu";
 
 const CancellingPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -50,9 +51,7 @@ const CancellingPage: React.FC = () => {
 
         setBookingDetails(booking);
 
-        if (booking.status === "confirmed") {
-          setMessage("You can cancel this booking.");
-        } else {
+        if (booking.status !== "confirmed") {
           setMessage("This booking cannot be cancelled.");
         }
       } catch (error) {
@@ -116,25 +115,28 @@ const CancellingPage: React.FC = () => {
       <img
         src="/images/logohcmut.png"
         alt="HCMUT Logo"
-        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
+        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg cursor-pointer"
+        onClick={() => navigate('/home')}
+        title="Go to Home"
       />
 
       <div className="relative z-10 bg-white text-black p-8 rounded-xl shadow-xl w-full max-w-md text-center">
         <h1 className="text-2xl font-bold mb-4">Cancel Booking</h1>
-        {message && <p className="text-lg mb-4">{message}</p>}
-        <p className="mb-4">Room Name: {roomName}</p>
-        <p className="mb-4">Check-in: {checkinFormatted}</p>
-        <p className="mb-4">Check-out: {checkoutFormatted}</p>
-
-        {bookingDetails?.status === "confirmed" && (
-          <button
-            onClick={handleCancel}
-            className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded mt-4"
-          >
-            Cancel Booking
-          </button>
+        {message ? (<p className="text-lg mb-4">{message}</p>) : (
+          <div>
+            <p className="text-lg mb-2">Room: {roomName}</p>
+            <p className="text-lg mb-2">Check-in: {checkinFormatted}</p>
+            <p className="text-lg mb-4">Check-out: {checkoutFormatted}</p>
+            <button
+              onClick={handleCancel}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+            >
+              Confirm Cancellation
+            </button>
+          </div>
         )}
       </div>
+      <UserMenu/>
     </div>
   );
 };

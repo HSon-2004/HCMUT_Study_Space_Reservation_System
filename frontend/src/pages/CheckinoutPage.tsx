@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate} from "react-router-dom";
 import axios from "axios";
+import UserMenu from "../components/UserMenu";
 
 const CheckinoutPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -128,14 +129,17 @@ const CheckinoutPage: React.FC = () => {
         backgroundPosition: "center",
       }}
     >
+      
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/40 to-black/70 backdrop-blur-sm z-0" />
 
       {/* Logo */}
       <img
         src="/images/logohcmut.png"
-        alt="HCMUT Logo"
-        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
+        alt="Logo"
+        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg cursor-pointer"
+        onClick={() => navigate('/home')}
+        title="Go to Home"
       />
 
       {/* Check-in/Check-out Form */}
@@ -171,6 +175,7 @@ const CheckinoutPage: React.FC = () => {
           </>
         )}
       </div>
+      <UserMenu/>
     </div>
   );
 };

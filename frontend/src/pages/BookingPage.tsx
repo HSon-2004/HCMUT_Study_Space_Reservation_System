@@ -3,8 +3,10 @@ import axios from "axios";
 import UserMenu from "../components/UserMenu";
 import RoomCard, { Room } from "../components/RoomCard";
 import RoomModal from "../components/RoomModal";
+import { useNavigate } from "react-router-dom";
 
 const BookingPage: React.FC = () => {
+  const navigate = useNavigate();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
@@ -38,7 +40,9 @@ const BookingPage: React.FC = () => {
       <img
         src="/images/logohcmut.png"
         alt="HCMUT Logo"
-        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
+        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg cursor-pointer"
+        onClick={() => navigate('/home')}
+        title="Go to Home"
       />
 
       {/* Title */}

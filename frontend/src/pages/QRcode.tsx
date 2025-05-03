@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
+import UserMenu from "../components/UserMenu";
 
 const QRPage: React.FC = () => {
   const { state } = useLocation();
@@ -35,7 +36,9 @@ const QRPage: React.FC = () => {
       <img
         src="/images/logohcmut.png"
         alt="Logo"
-        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
+        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg cursor-pointer"
+        onClick={() => navigate('/home')}
+        title="Go to Home"
       />
 
       {/* QR Code Content */}
@@ -77,6 +80,7 @@ const QRPage: React.FC = () => {
           </button>
         </div>
       </div>
+      <UserMenu/>
     </div>
   );
 };

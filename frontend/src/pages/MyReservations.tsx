@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UserMenu from "../components/UserMenu";
 
 type Reservation = {
   book_id: string;
@@ -72,7 +73,9 @@ const MyReservations: React.FC = () => {
       <img
         src="/images/logohcmut.png"
         alt="Logo"
-        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg"
+        className="absolute top-5 left-5 w-14 h-14 z-10 drop-shadow-lg cursor-pointer"
+        onClick={() => navigate('/home')}
+        title="Go to Home"
       />
 
       {/* Main Content */}
@@ -150,6 +153,7 @@ const MyReservations: React.FC = () => {
           )}
         </div>
       </div>
+      <UserMenu />
     </div>
   );
 };
