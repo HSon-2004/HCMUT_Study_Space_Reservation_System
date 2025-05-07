@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import BACKEND_URL from "../api/config";
+import { BACKEND_URL } from "../api/config";
 
 interface JwtPayload {
   exp: number; 

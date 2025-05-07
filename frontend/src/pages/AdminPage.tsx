@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserMenu from "../components/UserMenu";
-import BACKEND_URL from "../api/config";
+import { BACKEND_URL } from "../api/config";
 
 interface Room {
   room_id: string;

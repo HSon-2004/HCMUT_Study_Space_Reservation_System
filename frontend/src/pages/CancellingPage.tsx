@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserMenu from "../components/UserMenu";
-import BACKEND_URL from "../api/config";
+import { BACKEND_URL } from "../api/config";
 
 const CancellingPage: React.FC = () => {
   const [searchParams] = useSearchParams();
