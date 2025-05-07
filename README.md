@@ -64,13 +64,13 @@ You must have the following tools installed on your machine:
     ```bash
      npm run dev
      ```
-10. Open your browser and go to `http://localhost:5173/` to access the application.
+10. Open your browser and go to `http://localhost:3000/` to access the application.
 
 
 ## Note 
 - Make sure MongoDB is running before starting the backend server.
 - The backend server runs on port 5000 by default. If you want to change the port, you can do so in the `main.py` file.
-- The frontend server runs on port 5173 by default. If you want to change the port, you can do so in the `vite.config.js` file.
+- The frontend server runs on port 3000 by default. If you want to change the port, you can do so in the `vite.config.js` file.
 
 ## Accounts for testing
 - Admin account:
