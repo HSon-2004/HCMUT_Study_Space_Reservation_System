@@ -1,1 +1,2 @@
-from .settings import Config
+from .settings import *
+from .database import *
