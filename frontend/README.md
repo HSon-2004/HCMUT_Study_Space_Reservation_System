@@ -52,3 +52,68 @@ export default tseslint.config({
   },
 })
 ```
+
+## Cấu trúc thư mục
+```bash
+frontend/
+├── public/
+│   ├── favicon.svg
+│   ├── vite.svg
+│   └── images
+│       ├── background_hcmut.jpg
+│       └── logohcmut.png
+├── src/
+│   ├── assets/
+│   │   └── vite.svg
+│   ├── components/
+│   │   ├── PrivateRoute.tsx        # Component for private route
+│   │   ├── RoomCard.tsx       # Component for room card  
+│   │   ├── RoomModal.tsx    # Component for room modal
+│   │   └── UserMenu.tsx    # Component for user menu
+│   ├── pages/
+│   │   ├── AdminPage.tsx       # Admin page
+│   │   ├── BookingPage.tsx     # Booking page
+│   │   ├── CancellingPage.tsx       # Cancelling page         
+│   │   ├── CheckinoutPage.tsx      # Checkinout page
+│   │   ├── ConfirmPage.tsx     # Confirm page
+│   │   ├── HomePage.tsx      # Home page
+│   │   ├── Login.tsx      # Login page 
+│   │   ├── MyReservations.tsx        # My reservations page
+│   │   ├── QRcode.tsx      # QR code page  
+│   │   ├── Register.tsx    # Register page 
+│   │   └── Welcome.tsx     # Welcome page
+│   ├── App.tsx
+│   ├── main.tsx
+│   ├── index.css
+│   └── vite-env.d.ts
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── index.html
+```
+
+## Cấu trúc API
+```
+GET    /api/rooms                     - Get all rooms
+GET    /api/rooms/:id                 - Get room details
+POST   /api/rooms/create              - Create a new room
+PUT    /api/rooms/:id/update          - Update room details
+DELETE /api/rooms/:id                 - Delete a room
+
+GET    /api/users                     - Get all users (admin only)
+GET    /api/users/:id                 - Get user details
+POST   /api/users/create              - Create a new user (admin only)
+PUT    /api/users/:id/update          - Update user details
+DELETE /api/users/:id                 - Delete a user
+
+POST   /api/login                     - User login
+POST   /api/signup                    - User registration
+
+GET    /api/bookings                  - Get user's bookings
+GET    /api/bookings/all              - Get all bookings (admin only)
+GET    /api/bookings/:id              - Get booking details
+POST   /api/bookings/create           - Create a new booking
+PUT    /api/bookings/:id/update       - Update booking
+DELETE /api/bookings/:id              - Cancel/delete booking
+POST   /api/bookings/:id/checkin      - Check-in for booking
+```

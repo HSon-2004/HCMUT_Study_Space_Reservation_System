@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserMenu from "../components/UserMenu";
+import BACKEND_URL from "../api/config";
 
 type Reservation = {
   book_id: string;
@@ -28,7 +29,7 @@ const MyReservations: React.FC = () => {
 
       try {
         const response = await axios.get<Reservation[]>(
-          `http://localhost:5000/api/bookings`,
+          `${BACKEND_URL}/api/bookings`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

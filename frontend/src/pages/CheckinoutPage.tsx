@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import UserMenu from "../components/UserMenu";
+import BACKEND_URL from "../api/config";
 
 const CheckinoutPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -19,7 +20,7 @@ const CheckinoutPage: React.FC = () => {
 
       try {
         // Fetch all bookings for the user
-        const response = await axios.get("http://localhost:5000/api/bookings", {
+        const response = await axios.get(`${BACKEND_URL}/api/bookings`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -62,7 +63,7 @@ const CheckinoutPage: React.FC = () => {
     
     try {
       // Make API call to check-in
-      const response = await axios.post(`http://localhost:5000/api/bookings/${bookingDetails.book_id}/checkin`, {}, {
+      const response = await axios.post(`${BACKEND_URL}/api/bookings/${bookingDetails.book_id}/checkin`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -89,7 +90,7 @@ const CheckinoutPage: React.FC = () => {
     if (!bookingDetails) return;
     
     try {
-      const response = await axios.delete(`http://localhost:5000/api/bookings/${bookingDetails.book_id}`, {
+      const response = await axios.delete(`${BACKEND_URL}/api/bookings/${bookingDetails.book_id}`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },

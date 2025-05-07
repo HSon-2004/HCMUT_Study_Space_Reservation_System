@@ -82,3 +82,4 @@ You must have the following tools installed on your machine:
 - Teacher account:
     - Username: teacher@example.com
     - Password: teacher
+    

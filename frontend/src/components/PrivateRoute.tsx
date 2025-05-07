@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation} from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 
 
@@ -19,7 +19,6 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user is authenticated

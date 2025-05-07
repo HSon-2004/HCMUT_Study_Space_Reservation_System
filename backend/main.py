@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from app.config import Config, init_db
+from app.config import Config
 from app.seed_data import seed_data
 
 
@@ -15,7 +15,7 @@ def create_app():
     app.config.from_object(Config)
     CORS(app)
 
-    init_db()
+    #init_db()
     seed_data()
 
     # Register blueprints with URL prefixes

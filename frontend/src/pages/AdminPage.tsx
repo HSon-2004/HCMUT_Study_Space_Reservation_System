@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import UserMenu from "../components/UserMenu";
+import BACKEND_URL from "../api/config";
 
 interface Room {
   room_id: string;
@@ -57,7 +57,6 @@ const AdminPage: React.FC = () => {
     role: ""
   });
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [editingBooking, setEditingBooking] = useState<Booking | null>(null);
   const [deleteBookingConfirmation, setDeleteBookingConfirmation] = useState<{bookId: string, roomName: string, userName: string} | null>(null);
   const navigate = useNavigate();
 
@@ -69,7 +68,7 @@ const AdminPage: React.FC = () => {
 
   const fetchRooms = async () => {
     try {
-      const res = await axios.get<Room[]>("http://localhost:5000/api/rooms");
+      const res = await axios.get<Room[]>(`${BACKEND_URL}/api/rooms`);
       if (res.status === 401) {
         localStorage.clear();
         navigate("/login");
@@ -83,7 +82,7 @@ const AdminPage: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get<User[]>("http://localhost:5000/api/users", {
+      const res = await axios.get<User[]>(`${BACKEND_URL}/api/users`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       if (res.status === 401) {
@@ -99,7 +98,7 @@ const AdminPage: React.FC = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get<Booking[]>("http://localhost:5000/api/bookings/all", {
+      const res = await axios.get<Booking[]>(`${BACKEND_URL}/api/bookings/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       if (res.status === 401) {
@@ -117,7 +116,7 @@ const AdminPage: React.FC = () => {
     e.preventDefault();
     try {
       console.log("Adding new room:", newRoom);
-      const res = await axios.post("http://localhost:5000/api/rooms/create", newRoom, {
+      const res = await axios.post(`${BACKEND_URL}/api/rooms/create`, newRoom, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       if (res.status === 401) {
@@ -175,7 +174,7 @@ const AdminPage: React.FC = () => {
     
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/rooms/${editingRoom.room_id}/update`, 
+        `${BACKEND_URL}/api/rooms/${editingRoom.room_id}/update`, 
         editingRoom,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -250,7 +249,7 @@ const AdminPage: React.FC = () => {
     
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/rooms/${deleteConfirmation.roomId}`,
+        `${BACKEND_URL}/api/rooms/${deleteConfirmation.roomId}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
@@ -288,7 +287,7 @@ const AdminPage: React.FC = () => {
     
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/users/${editingUser.user_id}/update`, 
+        `${BACKEND_URL}/api/users/${editingUser.user_id}/update`, 
         editingUser,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -336,7 +335,7 @@ const AdminPage: React.FC = () => {
     
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/users/${deleteUserConfirmation.userId}`,
+        `${BACKEND_URL}/api/users/${deleteUserConfirmation.userId}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
@@ -365,7 +364,7 @@ const AdminPage: React.FC = () => {
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/users/create", newUser, {
+      const res = await axios.post(`${BACKEND_URL}/api/users/create`, newUser, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       
@@ -408,7 +407,7 @@ const AdminPage: React.FC = () => {
     
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/bookings/${deleteBookingConfirmation.bookId}`,
+        `${BACKEND_URL}/api/bookings/${deleteBookingConfirmation.bookId}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }

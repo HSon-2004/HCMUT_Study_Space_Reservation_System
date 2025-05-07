@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 import axios from "axios";
+import BACKEND_URL from "../api/config";
 
 const ConfirmPage: React.FC = () => {
   const { state } = useLocation();
@@ -25,7 +26,7 @@ const ConfirmPage: React.FC = () => {
         book_slot: slots.map((s: any) => s.time).join(", ")
       });
       const response = await axios.post<BookingResponse>(
-        `http://localhost:5000/api/bookings/create`,
+        `${BACKEND_URL}/api/bookings/create`,
         {
           room_id,
           checkin,

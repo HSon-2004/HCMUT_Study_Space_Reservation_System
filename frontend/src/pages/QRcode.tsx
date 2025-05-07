@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
 import UserMenu from "../components/UserMenu";
+import FRONTEND_URL from "../api/config";
 
 const QRPage: React.FC = () => {
   const { state } = useLocation();
@@ -14,7 +15,7 @@ const QRPage: React.FC = () => {
   const encodedRoomName = encodeURIComponent(state.roomName);
   //const localIP = import.meta.env.VITE_LOCAL_IP;
   const bookingData = {
-    URL: `http://localhost:5173/checkin?book_id=${state.book_id}&room_name=${encodedRoomName}&checkin=${state.checkin}&checkout=${state.checkout}`,
+    URL: `${FRONTEND_URL}/checkin?book_id=${state.book_id}&room_name=${encodedRoomName}&checkin=${state.checkin}&checkout=${state.checkout}`,
   };
   
 
@@ -54,7 +55,7 @@ const QRPage: React.FC = () => {
         <p className="mb-4">
           Check-in link:{" "}
           <a
-            href={`http://localhost:5173/checkin?book_id=${state.book_id}&room_name=${encodedRoomName}&checkin=${state.checkin}&checkout=${state.checkout}`}
+            href={`${FRONTEND_URL}/checkin?book_id=${state.book_id}&room_name=${encodedRoomName}&checkin=${state.checkin}&checkout=${state.checkout}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 underline hover:text-blue-800"

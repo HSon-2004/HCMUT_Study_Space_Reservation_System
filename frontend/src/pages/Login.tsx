@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import BACKEND_URL from "../api/config";
 
 interface JwtPayload {
   exp: number; 
@@ -41,7 +42,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(`${BACKEND_URL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

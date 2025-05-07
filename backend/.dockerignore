@@ -1,0 +1,23 @@
+# Python build artifacts
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+my_venv/
+
+# Logs, DB, and temp files
+*.log
+*.db
+
+# Environment variables
+.env
+
+# Editor directories
+.vscode/
+.idea/
+
+# Git files
+.git
+.gitignore

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import BACKEND_URL from "../api/config";
 
 const Register = () => {
   const [email, setEmail] = useState<string>("");
@@ -27,7 +27,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/signup", {
+      const response = await fetch(`${BACKEND_URL}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const Register = () => {
       className="min-h-screen w-full flex items-center justify-center relative text-white"
       style={{
         backgroundImage:
-          "url('https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=1740&q=80')",
+          "url('images/background_hcmut.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

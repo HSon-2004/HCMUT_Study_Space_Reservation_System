@@ -1,15 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface UserMenuProps {
-  reservations: Reservation[];
-}
-
-type Reservation = {
-  date: string;
-  time: string;
-  room: string;
-};
 
 const UserMenu: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);

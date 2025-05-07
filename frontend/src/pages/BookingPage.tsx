@@ -4,6 +4,7 @@ import UserMenu from "../components/UserMenu";
 import RoomCard, { Room } from "../components/RoomCard";
 import RoomModal from "../components/RoomModal";
 import { useNavigate } from "react-router-dom";
+import BACKEND_URL from "../api/config";
 
 const BookingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const BookingPage: React.FC = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const res = await axios.get<Room[]>("http://localhost:5000/api/rooms");
+        const res = await axios.get<Room[]>(`${BACKEND_URL}/api/rooms`);
         setRooms(res.data);
       } catch (error) {
         console.error("Failed to fetch rooms:", error);

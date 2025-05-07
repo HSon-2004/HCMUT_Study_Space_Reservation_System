@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserMenu from "../components/UserMenu";
+import BACKEND_URL from "../api/config";
 
 const CancellingPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -24,7 +25,7 @@ const CancellingPage: React.FC = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:5000/api/bookings", {
+        const response = await axios.get(`${BACKEND_URL}/api/bookings`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,7 +69,7 @@ const CancellingPage: React.FC = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/bookings/${bookingDetails.book_id}`,
+        `${BACKEND_URL}/api/bookings/${bookingDetails.book_id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

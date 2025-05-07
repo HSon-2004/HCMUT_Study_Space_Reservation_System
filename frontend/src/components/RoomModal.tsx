@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Room } from "./RoomCard";
+import BACKEND_URL from "../api/config";
 
 interface RoomModalProps {
   room: Room | null;
@@ -30,7 +31,7 @@ const RoomModal: React.FC<RoomModalProps> = ({ room, onClose }) => {
     }
     const fetchBookings = async () => {
       try {
-        const res = await axios.get<Booking[]>(`http://localhost:5000/api/bookings/room/${room.room_id}`);
+        const res = await axios.get<Booking[]>(`${BACKEND_URL}/api/bookings/room/${room.room_id}`);
         const newBooked: SelectedSlot[] = [];
 
         res.data.forEach((booking) => {
