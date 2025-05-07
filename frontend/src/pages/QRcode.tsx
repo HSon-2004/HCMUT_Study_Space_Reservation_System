@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
 import UserMenu from "../components/UserMenu";
-import FRONTEND_URL from "../api/config";
+import { FRONTEND_URL } from "../api/config";
 
 const QRPage: React.FC = () => {
   const { state } = useLocation();

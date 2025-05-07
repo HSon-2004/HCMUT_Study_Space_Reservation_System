@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import BACKEND_URL from "../api/config";
+import { BACKEND_URL } from "../api/config";
 
 const Register = () => {
   const [email, setEmail] = useState<string>("");

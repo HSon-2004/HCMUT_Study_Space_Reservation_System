@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Room } from "./RoomCard";
-import BACKEND_URL from "../api/config";
+import { BACKEND_URL } from "../api/config";
 
 interface RoomModalProps {
   room: Room | null;

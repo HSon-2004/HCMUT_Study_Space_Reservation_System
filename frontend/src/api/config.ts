@@ -1,3 +1,5 @@
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:5173";
-export default BACKEND_URL; FRONTEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || "http://localhost:3000";
+
+export { BACKEND_URL, FRONTEND_URL };
+

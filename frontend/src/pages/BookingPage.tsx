@@ -4,7 +4,7 @@ import UserMenu from "../components/UserMenu";
 import RoomCard, { Room } from "../components/RoomCard";
 import RoomModal from "../components/RoomModal";
 import { useNavigate } from "react-router-dom";
-import BACKEND_URL from "../api/config";
+import { BACKEND_URL } from "../api/config";
 
 const BookingPage: React.FC = () => {
   const navigate = useNavigate();

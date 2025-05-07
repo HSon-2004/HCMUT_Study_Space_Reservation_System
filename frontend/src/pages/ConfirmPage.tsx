@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 import axios from "axios";
-import BACKEND_URL from "../api/config";
+import { BACKEND_URL } from "../api/config";
 
 const ConfirmPage: React.FC = () => {
   const { state } = useLocation();
