@@ -41,6 +41,7 @@ You must have the following tools installed on your machine:
     ```bash
      SECRET_KEY=your_secret_key
      DATABASE_URL=your_database_url
+     MONGO_URI=your_mongo_url
      ```
     Replace `your_secret_key` and `your_database_url` with your actual secret key and database URL.
 
@@ -59,6 +60,11 @@ You must have the following tools installed on your machine:
     ```bash
      npm install
      ```
+9. Create file `.env`
+   ```bash
+   VITE_BACKEND_URL=http://localhost:5000
+   VITE_FRONTEND_URL=http://localhost:3000
+   ```
 
 9. Run the frontend server:
     ```bash
@@ -66,6 +72,11 @@ You must have the following tools installed on your machine:
      ```
 10. Open your browser and go to `http://localhost:3000/` to access the application.
 
+## Run project with docker
+   ```bash
+   docker compose up -d
+   ```
+Open your browser and go to `http://localhost:3000/` to access the application
 
 ## Note 
 - Make sure MongoDB is running before starting the backend server.
