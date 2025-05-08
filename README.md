@@ -7,6 +7,7 @@ This is a web application for managing study space reservations at HCMUT. The sy
 - Backend: FastAPI
 - Database: MongoDB
 - Authentication: JWT
+- Docker
 
 You must have the following tools installed on your machine:
 - Python 3.8 or higher
