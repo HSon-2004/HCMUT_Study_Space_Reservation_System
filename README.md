@@ -94,4 +94,5 @@ Open your browser and go to `http://localhost:3000/` to access the application
 - Teacher account:
     - Username: teacher@example.com
     - Password: teacher
-    
+
+`Note:` Database will be dropped after restart.
