@@ -22,7 +22,7 @@ You must have the following tools installed on your machine:
 1. Clone the repository:
    ```bash
 
-    git clone -b dev
+    git clone https://github.com/HSon-2004/HCMUT_Study_Space_Reservation_System.git
    ```
 
 2. Navigate to the project directory:
